@@ -26,6 +26,9 @@ namespace HeroQuest{
 
             return node;
         }
+        // Time Complexity: O(h), where h is the height of the BST.
+        // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
+        // In the best case (balanced BST), h = O(log n).
 
         // Searches for the closest challenge based on difficulty
         public Challenge FindClosestChallenge(int difficulty)
@@ -53,6 +56,10 @@ namespace HeroQuest{
             {
                 return FindClosestChallenge(node.Right, difficulty, closest);
             }
+
+            // Time Complexity: O(h), where h is the height of the BST.
+            // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
+            // In the best case (balanced BST), h = O(log n).
         }
 
         // Removes a challenge from the BST
@@ -94,6 +101,10 @@ namespace HeroQuest{
                 // Delete the inorder successor
                 node.Right = Remove(node.Right, node.Challenge.Difficulty);
             }
+
+            // Time Complexity: O(h), where h is the height of the BST.
+            // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
+            // In the best case (balanced BST), h = O(log n).
 
             return node;
         }

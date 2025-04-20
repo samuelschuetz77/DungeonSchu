@@ -117,6 +117,8 @@ namespace HeroQuest
                     }
                 }
             }
+            
+        // Time Complexity: O(V + E), where V is the number of nodes (rooms) and E is the number of edges (paths).
 
             // The graph is connected if all nodes have been visited.
             return visited.Count == AdjacencyList.Count;

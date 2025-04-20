@@ -9,7 +9,8 @@ namespace HeroQuest
         private ChallengeBST challengeTree;
         private List<Room> rooms; // List of rooms for treasure and challenge dispersal.
         private string playerName; // Store the player's name.
-        private HashSet<int> visitedRooms = new HashSet<int>();
+        private Stack<int> visitedRooms = new Stack<int>(); // Use a stack to track visited rooms.
+        private Stack<Treasure> treasureStack = new Stack<Treasure>();
 
         private static readonly List<Item> AllItems = new List<Item>
         {
@@ -219,8 +220,16 @@ namespace HeroQuest
                 Console.WriteLine($"You are in room {currentRoom}, {playerName}.");
                 Console.WriteLine("==============================");
 
-                // Mark the current room as visited.
-                visitedRooms.Add(currentRoom);
+                // Push the current room onto the stack.
+                visitedRooms.Push(currentRoom);
+
+                // Display the path taken so far.
+                Console.WriteLine("Path taken:");
+                foreach (var room in visitedRooms)
+                {
+                    Console.Write($"{room} -> ");
+                }
+                Console.WriteLine("End");
 
                 // Display the hero's attributes.
                 Console.WriteLine("Your attributes:");
@@ -254,9 +263,17 @@ namespace HeroQuest
                 if (currentRoomObj.Treasure != null)
                 {
                     Console.WriteLine($"You found a treasure: {currentRoomObj.Treasure.Name}!");
-                    currentRoomObj.Treasure.ApplyToHero(hero);
+                    treasureStack.Push(currentRoomObj.Treasure); // Add the treasure to the stack.
+                    currentRoomObj.Treasure.ApplyToHero(hero); // Apply the treasure's effect.
                     Console.WriteLine($"Your {currentRoomObj.Treasure.AffectedAttribute} increased by {currentRoomObj.Treasure.BoostValue}.");
-                    currentRoomObj.Treasure = null; // Remove the treasure after collecting it.
+                    currentRoomObj.Treasure = null; // Remove the treasure from the room.
+                }
+
+                // Display treasures collected so far.
+                Console.WriteLine("Treasures collected:");
+                foreach (var treasure in treasureStack)
+                {
+                    Console.WriteLine($"- {treasure.Name}");
                 }
 
                 // Check for a challenge in the current room.
@@ -358,6 +375,7 @@ namespace HeroQuest
                 }
 
                 Console.WriteLine($"{connectedRooms.Count + 1}. Exit the game.");
+                Console.WriteLine($"{connectedRooms.Count + 2}. Backtrack to the previous room.");
                 Console.WriteLine("==============================");
 
                 // Get the player's choice.
@@ -371,6 +389,18 @@ namespace HeroQuest
                 {
                     Console.WriteLine($"You have exited the game, {playerName}. Farewell!");
                     gameRunning = false;
+                }
+                else if (roomChoice == connectedRooms.Count + 2)
+                {
+                    if (visitedRooms.Count > 0)
+                    {
+                        visitedRooms.Pop(); // Backtrack to the previous room.
+                        currentRoom = visitedRooms.Peek();
+                    }
+                    else
+                    {
+                        Console.WriteLine("No previous room to backtrack to.");
+                    }
                 }
                 else
                 {
