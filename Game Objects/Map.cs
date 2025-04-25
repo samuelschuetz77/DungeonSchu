@@ -5,97 +5,79 @@ namespace HeroQuest
 {
     public class Map
     {
-        // Represents the graph as an adjacency list where each node (room) maps to a list of edges (connections to other rooms).
         public Dictionary<int, List<Edge>> AdjacencyList { get; private set; }
-
-        // The designated exit node (room) in the map.
         public int ExitNode { get; private set; }
-
-        // Random number generator for creating the map and assigning the exit node.
         private Random random;
-
-        // Constructor to initialize the map with a specified number of nodes (rooms).
         public Map(int numNodes)
         {
-            random = new Random(); // Initialize the random number generator.
-            InitializeAdjacencyList(numNodes); // Set up the adjacency list for the graph.
-            ExitNode = random.Next(1, numNodes + 1); // Randomly select the exit node.
-            Console.WriteLine($"The exit is in room: {ExitNode}"); // Inform the user of the exit room.
-            GenerateRandomMap(numNodes); // Generate the random map with connections.
-            EnsurePathToExit(1, ExitNode); // Ensure there is a valid path from the start node to the exit node.
+            random = new Random(); 
+            InitializeAdjacencyList(numNodes); 
+            ExitNode = random.Next(1, numNodes + 1); 
+            Console.WriteLine($"The exit is in room: {ExitNode}");
+            GenerateRandomMap(numNodes); 
+            EnsurePathToExit(1, ExitNode); 
         }
-
-        // Initializes the adjacency list for the graph with the specified number of nodes.
         private void InitializeAdjacencyList(int numNodes)
         {
-            AdjacencyList = new Dictionary<int, List<Edge>>(); // Create a new dictionary to store the adjacency list.
+            AdjacencyList = new Dictionary<int, List<Edge>>(); 
             for (int i = 1; i <= numNodes; i++) // Loop through each node.
             {
-                AdjacencyList[i] = new List<Edge>(); // Initialize an empty list of edges for each node.
+                AdjacencyList[i] = new List<Edge>(); 
             }
         }
-
-        // Adds an edge (connection) between two nodes (rooms) with optional requirements.
         public void AddEdge(int u, int v, Attribute requiredStatType = Attribute.Intelligence, string requiredItem = null, int minimumStatValue = 0)
         {
-            if (!IsAdjacent(u, v)) // Check if the edge already exists to avoid duplicates.
+            if (!IsAdjacent(u, v)) 
             {
-                // Add the edge from node u to node v with the specified requirements.
+                // Add the edge from node u to node v with the specified requirements
                 AdjacencyList[u].Add(new Edge(v, requiredStatType, requiredItem, minimumStatValue));
-                // Add the edge from node v to node u (undirected graph).
+                // Add the edge from node v to node u (undirected graph)
                 AdjacencyList[v].Add(new Edge(u, requiredStatType, requiredItem, minimumStatValue));
             }
         }
-
-        // Generates a random map by ensuring basic connectivity and adding random edges.
         private void GenerateRandomMap(int numNodes)
         {
-            EnsureBasicConnectivity(numNodes); // Ensure every node is connected to at least one other node.
-            AddRandomEdges(numNodes); // Add additional random edges to increase complexity.
+            EnsureBasicConnectivity(numNodes); 
+            AddRandomEdges(numNodes); 
         }
-
-        // Ensures that the graph is connected by creating a basic path through all nodes.
         private void EnsureBasicConnectivity(int numNodes)
         {
-            for (int i = 1; i < numNodes; i++) // Loop through each node except the last one.
+            for (int i = 1; i < numNodes; i++) 
             {
-                int neighbor = random.Next(i + 1, numNodes + 1); // Randomly select a neighbor node.
-                AddEdge(i, neighbor); // Add an edge between the current node and the neighbor.
+                int neighbor = random.Next(i + 1, numNodes + 1); //randomly select one neighbor 
+                AddEdge(i, neighbor); //add an edge between the current node and the neighbor node
             }
         }
 
         // Adds additional random edges to the graph to make it more complex.
         private void AddRandomEdges(int numNodes)
         {
-            for (int i = 0; i < numNodes * 2; i++) // Add twice as many edges as there are nodes.
+            for (int i = 0; i < numNodes * 2; i++)
             {
-                int u = random.Next(1, numNodes + 1); // Randomly select the first node.
-                int v = random.Next(1, numNodes + 1); // Randomly select the second node.
-                if (u != v) // Ensure the two nodes are not the same.
+                int u = random.Next(1, numNodes + 1); //random selection
+                int v = random.Next(1, numNodes + 1); // random selection
+                if (u != v) 
                 {
                     AddEdge(u, v); // Add an edge between the two nodes.
                 }
             }
         }
-
-        // Ensures there is a valid path from the start node to the exit node.
         private void EnsurePathToExit(int startNode, int exitNode)
         {
-            if (!IsGraphConnected()) // Check if the graph is connected.
+            if (!IsGraphConnected()) 
             {
                 Console.WriteLine("Graph is not connected. Adding direct path to exit...");
-                AddEdge(startNode, exitNode); // Add a direct edge from the start node to the exit node.
+                AddEdge(startNode, exitNode); // Add an edge from start to finish to ensure a path to the exit
             }
         }
 
-        // Checks if two nodes are directly connected by an edge.
+        // Checks if two nodes are connected
         private bool IsAdjacent(int u, int v)
         {
-            // Check if there is an edge in the adjacency list from node u to node v.
             return AdjacencyList[u].Exists(edge => edge.Target == v);
         }
 
-        // Determines if the graph is connected using Depth-First Search (DFS).
+        // Uses Depth First Search to ensure the graph is connected
         private bool IsGraphConnected()
         {
             HashSet<int> visited = new HashSet<int>(); // Keep track of visited nodes.
@@ -118,7 +100,7 @@ namespace HeroQuest
                 }
             }
             
-        // Time Complexity: O(V + E), where V is the number of nodes (rooms) and E is the number of edges (paths).
+        // Time Complexity: O(V + E), V=num nodes e=num edges
 
             // The graph is connected if all nodes have been visited.
             return visited.Count == AdjacencyList.Count;

@@ -5,7 +5,7 @@ namespace HeroQuest{
         public int Agility { get; set; }
         public int Intelligence { get; set; }
         public int Health { get; set; }
-        public Queue<Item> Inventory { get; set; } // Inventory is implemented as a queue.
+        public Queue<Item> Inventory { get; set; } 
 
         // Time Complexity for Queue Operations:
         // Enqueue: O(1)

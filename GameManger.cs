@@ -7,9 +7,9 @@ namespace HeroQuest
         private Hero hero;
         private Map map;
         private ChallengeBST challengeTree;
-        private List<Room> rooms; // List of rooms for treasure and challenge dispersal.
-        private string playerName; // Store the player's name.
-        private Stack<int> visitedRooms = new Stack<int>(); // Use a stack to track visited rooms.
+        private List<Room> rooms; // List of rooms for treasure and challenge dispersal
+        private string playerName;
+        private Stack<int> visitedRooms = new Stack<int>();
         private Stack<Treasure> treasureStack = new Stack<Treasure>();
 
         private static readonly List<Item> AllItems = new List<Item>
@@ -61,10 +61,10 @@ namespace HeroQuest
             Console.Clear();
             Console.WriteLine("Welcome to Hero's Quest!");
             Console.WriteLine("=========================");
-            Console.Write("Enter your name, brave adventurer: ");
-            playerName = Console.ReadLine(); // Get the player's name.
+            Console.Write("Enter your name: ");
+            playerName = Console.ReadLine();
             Console.WriteLine($"Welcome, {playerName}! Your adventure begins now...");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(3500); 
             Console.Clear();
 
             CreateHero();
@@ -81,7 +81,7 @@ namespace HeroQuest
             Console.WriteLine($"Creating {playerName}, the Hero...");
             Console.WriteLine("=====================");
 
-            // Initialize the hero with default stats and an empty inventory.
+            // Initialize the hero stats
             hero = new Hero
             {
                 Strength = 10,
@@ -91,7 +91,7 @@ namespace HeroQuest
                 Inventory = new Queue<Item>()
             };
 
-            // Add initial items to the hero's inventory.
+            // Add default sword and Health Potion
             hero.Inventory.Enqueue(new Item { Name = "Sword", Attribute = Attribute.Strength });
             hero.Inventory.Enqueue(new Item { Name = "Health Potion", Attribute = Attribute.Health });
 
@@ -99,7 +99,7 @@ namespace HeroQuest
             Console.WriteLine($"Strength: {hero.Strength}, Agility: {hero.Agility}, Intelligence: {hero.Intelligence}, Health: {hero.Health}");
             Console.WriteLine("Starting inventory: Sword, Health Potion");
             Console.WriteLine("=====================");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(3500); 
             Console.Clear();
         }
 
@@ -108,19 +108,19 @@ namespace HeroQuest
             Console.WriteLine("Generating the map...");
             Console.WriteLine("=====================");
 
-            // Generate a map with 15 rooms.
-            map = new Map(15);
+            // Generate a map with 16 rooms.
+            map = new Map(16);
             rooms = new List<Room>();
 
             // Create Room objects for each room in the map.
-            for (int i = 1; i <= 15; i++)
+            for (int i = 1; i <= 16; i++)
             {
                 rooms.Add(new Room(i));
             }
 
-            Console.WriteLine("Map generated with 15 rooms.");
+            Console.WriteLine("Map generated with 16 rooms.");
             Console.WriteLine("=====================");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(2000);
             Console.Clear();
         }
 
@@ -137,11 +137,11 @@ namespace HeroQuest
             foreach (var room in rooms)
             {
                 Challenge challenge = new Challenge(
-                    difficulty: random.Next(1, 21), // Difficulty between 1 and 20.
-                    type: (ChallengeType)random.Next(0, 3), // Random challenge type (Combat, Trap, Puzzle).
-                    requiredStatType: (Attribute)random.Next(0, 3), // Random required stat (Strength, Agility, Intelligence).
-                    minimumStatValue: random.Next(5, 16), // Minimum stat value between 5 and 15.
-                    requiredItem: random.Next(0, 2) == 0 ? "Key" : null // 50% chance of requiring an item.
+                    difficulty: random.Next(1, 21), 
+                    type: (ChallengeType)random.Next(0, 3), 
+                    requiredStatType: (Attribute)random.Next(0, 3), 
+                    minimumStatValue: random.Next(5, 16), 
+                    requiredItem: random.Next(0, 2) == 0 ? "Key" : null 
                 );
 
                 challengeTree.Insert(challenge);
@@ -150,7 +150,7 @@ namespace HeroQuest
 
             Console.WriteLine("Challenges have been dispersed into the rooms.");
             Console.WriteLine("========================");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(2000); 
             Console.Clear();
         }
 
@@ -168,17 +168,17 @@ namespace HeroQuest
                 {
                     Treasure treasure = new Treasure(
                         name: "Treasure " + room.RoomNumber,
-                        affectedAttribute: (Attribute)random.Next(0, 4), // Randomly select an attribute.
-                        boostValue: random.Next(1, 4) // Boost value between 1 and 3.
+                        affectedAttribute: (Attribute)random.Next(0, 4),
+                        boostValue: random.Next(1, 4)
                     );
 
-                    room.Treasure = treasure; // Assign the treasure to the room.
+                    room.Treasure = treasure;
                 }
             }
 
             Console.WriteLine("Treasures have been dispersed into the rooms.");
             Console.WriteLine("========================");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(2000);
             Console.Clear();
         }
 
@@ -194,21 +194,21 @@ namespace HeroQuest
                 // 33% chance to place an item in the room.
                 if (random.Next(0, 3) < 1)
                 {
-                    // Randomly select an item from the list of all items.
+                    // Random item from item list
                     Item item = AllItems[random.Next(AllItems.Count)];
-                    room.IteminRoom = item; // Assign the item to the room.
+                    room.IteminRoom = item; 
                 }
             }
 
             Console.WriteLine("Items have been dispersed into the rooms.");
             Console.WriteLine("===================");
-            Thread.Sleep(2000); // Pause for 2 seconds.
+            Thread.Sleep(2000); 
             Console.Clear();
         }
 
         private void PlayGame()
         {
-            Console.WriteLine($"The adventure begins, {playerName}! Navigate the map and face challenges.");
+            Console.WriteLine($"The adventure begins, {playerName}!");
             Console.WriteLine("===================================================");
 
             bool gameRunning = true;
@@ -220,10 +220,8 @@ namespace HeroQuest
                 Console.WriteLine($"You are in room {currentRoom}, {playerName}.");
                 Console.WriteLine("==============================");
 
-                // Push the current room onto the stack.
                 visitedRooms.Push(currentRoom);
 
-                // Display the path taken so far.
                 Console.WriteLine("Path taken:");
                 foreach (var room in visitedRooms)
                 {
@@ -231,7 +229,6 @@ namespace HeroQuest
                 }
                 Console.WriteLine("End");
 
-                // Display the hero's attributes.
                 Console.WriteLine("Your attributes:");
                 Console.WriteLine($"- Strength: {hero.Strength}");
                 Console.WriteLine($"- Agility: {hero.Agility}");
@@ -239,7 +236,6 @@ namespace HeroQuest
                 Console.WriteLine($"- Health: {hero.Health}");
                 Console.WriteLine("==============================");
 
-                // Display the hero's inventory.
                 Console.WriteLine("Your inventory:");
                 if (hero.Inventory.Count > 0)
                 {
@@ -251,7 +247,6 @@ namespace HeroQuest
                 }
                 Console.WriteLine("==============================");
 
-                // Get the current room object.
                 Room currentRoomObj = rooms.FirstOrDefault(r => r.RoomNumber == currentRoom);
                 if (currentRoomObj == null)
                 {
@@ -259,24 +254,52 @@ namespace HeroQuest
                     break;
                 }
 
-                // Check for a treasure in the current room.
+               
+                if (currentRoom == map.ExitNode)
+                {
+                    Console.WriteLine("You have reached the exit of the dungeon!");
+
+                    // need these stats to exit the dungeon. 
+                    if (hero.Strength >= 10 && hero.Agility >= 13 && hero.Intelligence >= 13 && hero.Health >= 5)
+                    {
+                        Console.Write("Do you want to leave the dungeon and win the game? (yes/no): ");
+                        string choice = Console.ReadLine()?.ToLower();
+
+                        if (choice == "yes" || choice == "y")
+                        {
+                            Console.WriteLine($"Congratulations, {playerName}! You have successfully escaped the dungeon and won the game!");
+                            gameRunning = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("You decided to stay in the dungeon. Continue exploring!");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("You cannot leave the dungeon yet.");
+                        Console.WriteLine("Keep exploring to improve your stats.");
+                    }
+                }
+
+                
                 if (currentRoomObj.Treasure != null)
                 {
                     Console.WriteLine($"You found a treasure: {currentRoomObj.Treasure.Name}!");
-                    treasureStack.Push(currentRoomObj.Treasure); // Add the treasure to the stack.
-                    currentRoomObj.Treasure.ApplyToHero(hero); // Apply the treasure's effect.
+                    treasureStack.Push(currentRoomObj.Treasure);
+                    currentRoomObj.Treasure.ApplyToHero(hero);
                     Console.WriteLine($"Your {currentRoomObj.Treasure.AffectedAttribute} increased by {currentRoomObj.Treasure.BoostValue}.");
-                    currentRoomObj.Treasure = null; // Remove the treasure from the room.
+                    currentRoomObj.Treasure = null;
                 }
 
-                // Display treasures collected so far.
+               
                 Console.WriteLine("Treasures collected:");
                 foreach (var treasure in treasureStack)
                 {
                     Console.WriteLine($"- {treasure.Name}");
                 }
 
-                // Check for a challenge in the current room.
                 if (currentRoomObj.Challenge != null)
                 {
                     Console.WriteLine($"A {currentRoomObj.Challenge.Type} challenge appears! Difficulty: {currentRoomObj.Challenge.Difficulty}");
@@ -302,7 +325,6 @@ namespace HeroQuest
                     }
                 }
 
-                // Check for an item in the current room.
                 if (currentRoomObj.IteminRoom != null)
                 {
                     Console.WriteLine($"You found an item: {currentRoomObj.IteminRoom.Name}!");
@@ -317,7 +339,7 @@ namespace HeroQuest
                             Console.WriteLine("Your inventory is full. The oldest item will be discarded.");
                             Item removedItem = hero.Inventory.Dequeue(); // Remove the oldest item.
 
-                            // Reverse the effect of the removed item.
+                            // get rid of the effects of the dequed item
                             switch (removedItem.Attribute)
                             {
                                 case Attribute.Strength:
@@ -335,9 +357,9 @@ namespace HeroQuest
                             }
                         }
 
-                        hero.Inventory.Enqueue(currentRoomObj.IteminRoom); // Add the new item to the inventory.
+                        hero.Inventory.Enqueue(currentRoomObj.IteminRoom); 
 
-                        // Apply the effect of the new item.
+                        //apply new item's effect
                         switch (currentRoomObj.IteminRoom.Attribute)
                         {
                             case Attribute.Strength:
@@ -361,16 +383,15 @@ namespace HeroQuest
                         Console.WriteLine("You decided not to pick up the item.");
                     }
 
-                    currentRoomObj.IteminRoom = null; // Remove the item from the room.
+                    currentRoomObj.IteminRoom = null; 
                 }
 
-                // Display connected rooms with "(Visited)" marker.
                 Console.WriteLine("Connected rooms:");
                 var connectedRooms = map.AdjacencyList[currentRoom];
                 for (int i = 0; i < connectedRooms.Count; i++)
                 {
                     int targetRoom = connectedRooms[i].Target;
-                    string visitedMarker = visitedRooms.Contains(targetRoom) ? " (Visited)" : "";
+                    string visitedMarker = visitedRooms.Contains(targetRoom) ? " (Visited)" : ""; 
                     Console.WriteLine($"{i + 1}. Room {targetRoom}{visitedMarker}");
                 }
 
@@ -394,7 +415,7 @@ namespace HeroQuest
                 {
                     if (visitedRooms.Count > 0)
                     {
-                        visitedRooms.Pop(); // Backtrack to the previous room.
+                        visitedRooms.Pop(); // this allows backtracking 
                         currentRoom = visitedRooms.Peek();
                     }
                     else

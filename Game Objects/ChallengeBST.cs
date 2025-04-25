@@ -26,9 +26,9 @@ namespace HeroQuest{
 
             return node;
         }
-        // Time Complexity: O(h), where h is the height of the BST.
-        // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
-        // In the best case (balanced BST), h = O(log n).
+          // Time Complexity:
+            // unblanaced h = O(n)
+            //balanced  h = O(log n).
 
         // Searches for the closest challenge based on difficulty
         public Challenge FindClosestChallenge(int difficulty)
@@ -57,9 +57,9 @@ namespace HeroQuest{
                 return FindClosestChallenge(node.Right, difficulty, closest);
             }
 
-            // Time Complexity: O(h), where h is the height of the BST.
-            // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
-            // In the best case (balanced BST), h = O(log n).
+                // Time Complexity:
+            // unblanaced h = O(n)
+            //balanced  h = O(log n).
         }
 
         // Removes a challenge from the BST
@@ -85,7 +85,6 @@ namespace HeroQuest{
             }
             else
             {
-                // Node with only one child or no child
                 if (node.Left == null)
                 {
                     return node.Right;
@@ -95,16 +94,16 @@ namespace HeroQuest{
                     return node.Left;
                 }
 
-                // Node with two children: Get the inorder successor (smallest in the right subtree)
+                // Get inorder successor 
                 node.Challenge = FindMin(node.Right).Challenge;
 
                 // Delete the inorder successor
                 node.Right = Remove(node.Right, node.Challenge.Difficulty);
             }
 
-            // Time Complexity: O(h), where h is the height of the BST.
-            // In the worst case (unbalanced BST), h = O(n), where n is the number of nodes.
-            // In the best case (balanced BST), h = O(log n).
+            // Time Complexity:
+            // unblanaced h = O(n)
+            //balanced  h = O(log n).
 
             return node;
         }
@@ -118,13 +117,12 @@ namespace HeroQuest{
             return node;
         }
 
-        // Traverses the BST in-order (for debugging or display purposes)
-        public void InOrderTraversal(Action<Challenge> action)
+            public void InOrderTraversal(Action<Challenge> action)
         {
             InOrderTraversal(Root, action);
         }
 
-        private void InOrderTraversal(ChallengeNode node, Action<Challenge> action)
+        private void InOrderTraversal(ChallengeNode node, Action<Challenge> action) //uses challenge delegate
         {
             if (node != null)
             {

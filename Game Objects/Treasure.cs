@@ -13,7 +13,6 @@ namespace HeroQuest
             BoostValue = boostValue;
         }
 
-        // Apply the treasure's effect to the hero.
         public void ApplyToHero(Hero hero)
         {
             switch (AffectedAttribute)
