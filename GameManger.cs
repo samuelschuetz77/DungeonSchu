@@ -259,8 +259,8 @@ namespace HeroQuest
                 {
                     Console.WriteLine("You have reached the exit of the dungeon!");
 
-                    // need these stats to exit the dungeon. 
-                    if (hero.Strength >= 10 && hero.Agility >= 13 && hero.Intelligence >= 13 && hero.Health >= 5)
+                    // need to visit all the rooms to exit the game
+                    if (visitedRooms.Count()>=15)
                     {
                         Console.Write("Do you want to leave the dungeon and win the game? (yes/no): ");
                         string choice = Console.ReadLine()?.ToLower();
@@ -279,7 +279,7 @@ namespace HeroQuest
                     else
                     {
                         Console.WriteLine("You cannot leave the dungeon yet.");
-                        Console.WriteLine("Keep exploring to improve your stats.");
+                        Console.WriteLine("Visit all the nodes");
                     }
                 }
 
